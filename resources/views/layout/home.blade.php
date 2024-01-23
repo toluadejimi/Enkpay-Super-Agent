@@ -111,7 +111,7 @@
                         <li class="sidebar-item">
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="page-account-settings.html" aria-expanded="false">
+                            <a class="sidebar-link" href="#" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-user-circle"></i>
                                 </span>
