@@ -1174,4 +1174,13 @@ class HomeController extends Controller
 
         return view('all-customers', $data);
     }
+
+
+    public function  log_out(request $request)
+    {
+
+        Auth::logout();
+
+        return redirect('/');
+    }
 }
