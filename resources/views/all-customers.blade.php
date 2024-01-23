@@ -197,7 +197,6 @@
 
                             </tbody>
 
-                            {{ $customers->links() }}
                         </table>
 
                     </div>
