@@ -6,6 +6,7 @@ use DateTime;
 use Carbon\Carbon;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Charge;
 use App\Models\Device;
 use App\Models\SoldLog;
 use App\Models\Category;
@@ -1161,6 +1162,43 @@ class HomeController extends Controller
             return view('all-customers', $data);
         }
     }
+
+
+    public function  company(request $request)
+    {
+
+        $data['company'] = SuperAgent::where('user_id', Auth::id())->first();
+        $data['pos_charge'] = Charge::where('user_id', Auth::id())->where('title', 'pos_charge')->first()->amount;
+        $data['transfer_charge'] = Charge::where('user_id', Auth::id())->where('title', 'transfer_charge')->first()->amount;
+        $data['bills_charge'] = Charge::where('user_id', Auth::id())->where('title', 'bills_charge')->first()->amount;
+
+
+
+
+        return view('company', $data);
+    }
+
+
+
+    public function  update_company(request $request)
+    {
+
+
+
+        SuperAgent::where('user_id', Auth::id())->update([
+
+            'pos_charge' => $request->pos_charge,
+            'transfer_charge' => $request->transfer_charge,
+            'bills_charge' => $request->bills_charge,
+
+        ]);
+
+
+        return back()->with('message', "updated successfully");
+
+
+    }
+
 
 
     public function  view_all_customers(request $request)

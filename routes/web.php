@@ -43,6 +43,12 @@ Route::any('search-customer',  [HomeController::class,'search_customer']);
 Route::any('view-customer',  [HomeController::class,'view_customer']);
 Route::any('terminal',  [HomeController::class,'view_terminal']);
 Route::any('add-terminal',  [HomeController::class,'add_terminal']);
+Route::any('company',  [HomeController::class,'company']);
+Route::any('edit-company',  [HomeController::class,'update_company']);
+
+
+
+
 
 Route::any('logout',  [HomeController::class,'log_out']);
 
