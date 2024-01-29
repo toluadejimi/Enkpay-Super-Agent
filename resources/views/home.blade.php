@@ -101,121 +101,126 @@
 
                         <div class="table-responsive mb-4">
                             <table class="table border text-nowrap customize-table mb-0 align-middle">
-                                <thead class="text-dark fs-4">
-                                    <tr>
-                                        <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">Refrence Number</h6>
-                                        </th>
-                                        <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">Customer Name</h6>
-                                        </th>
-                                        <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">Debit</h6>
-                                        </th>
-                                        <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">Credit</h6>
-                                        </th>
+                                  <thead class="text-dark fs-4">
+                                <tr>
+                                    <th>
+                                        <h6 class="fs-4 fw-semibold mb-0">Refrence Number</h6>
+                                    </th>
+                                    <th>
+                                        <h6 class="fs-4 fw-semibold mb-0">Customer Name</h6>
+                                    </th>
+                                    <th>
+                                        <h6 class="fs-4 fw-semibold mb-0">Debit</h6>
+                                    </th>
+                                    <th>
+                                        <h6 class="fs-4 fw-semibold mb-0">Credit</h6>
+                                    </th>
 
-                                        <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">Balance</h6>
-                                        </th>
+                                    <th>
+                                        <h6 class="fs-4 fw-semibold mb-0">Balance</h6>
+                                    </th>
 
-                                        <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">Type</h6>
-                                        </th>
+                                    <th>
+                                        <h6 class="fs-4 fw-semibold mb-0">Type</h6>
+                                    </th>
 
-                                        <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">Agent Fee</h6>
-                                        </th>
+                                    <th>
+                                        <h6 class="fs-4 fw-semibold mb-0">Agent Fee</h6>
+                                    </th>
 
-                                        <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">Status</h6>
-                                        </th>
+                                    <th>
+                                        <h6 class="fs-4 fw-semibold mb-0">Status</h6>
+                                    </th>
 
-                                        <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">Date / Time</h6>
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                    <th>
+                                        <h6 class="fs-4 fw-semibold mb-0">Date / Time</h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                                    @forelse($transactions as $data)
+                                @forelse($transactions as $data)
 
-                                    <tr>
+                                <tr>
 
-                                        <td>{{$data->ref_trans_id}}</td>
-                                        <td>{{$data->user->first_name}} {{$data->user->last_name}}</td>
-                                        <td>₦{{number_format($data->debit ,2)}}</td>
-                                        <td>₦{{number_format($data->credit ,2)}}</td>
-                                        <td>₦{{number_format($data->balance ,2)}}</td>
-                                        <td>
-                                            @if($data->transaction_type == 'Purchase')
-                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
-                                                <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
-                                                PURCHASE
-                                            </span>
-                                            @elseif($data->transaction_type == 'VirtualFundWallet')
-                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
-                                                <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
-                                                WALLET FUNDING
-                                            </span>
-                                            @elseif($data->transaction_type == 'BankTransfer')
-                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
-                                                <iconify-icon icon="mdi:arrow-up-thin"></iconify-icon>
-                                                BANK TRANSFER
-                                            </span>
-                                            @elseif($data->transaction_type == 'CashOut')
-                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
-                                                <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
-                                                CASH OUT
-                                            </span>
+                                    <td>{{$data->ref_trans_id}}</td>
+                                    <td>{{$data->user->first_name}} {{$data->user->last_name}}</td>
+                                    <td>₦{{number_format($data->debit ,2)}}</td>
+                                    <td>₦{{number_format($data->credit ,2)}}</td>
+                                    <td>₦{{number_format($data->balance ,2)}}</td>
+                                    <td>
+                                        @if($data->transaction_type == 'PURCHASE')
+                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
+                                            PURCHASE
+                                        </span>
+                                         @elseif($data->transaction_type == 'Purchase')
+                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
+                                            PURCHASE
+                                        </span>
+                                        @elseif($data->transaction_type == 'VirtualFundWallet')
+                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
+                                            WALLET FUNDING
+                                        </span>
+                                        @elseif($data->transaction_type == 'BankTransfer')
+                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="mdi:arrow-up-thin"></iconify-icon>
+                                            BANK TRANSFER
+                                        </span>
+                                        @elseif($data->transaction_type == 'CashOut')
+                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
+                                            CASH OUT
+                                        </span>
 
-                                            @elseif($data->transaction_type == 'EP TRANSFER')
-                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
-                                                <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
-                                                EP TRANSFER
-                                            </span>
-                                            @endif
-
-
-
-                                        </td>
-
-                                        <td>₦{{number_format($data->agent_fee ,2)}}</td>
-
-                                        <td>
-                                            @if($data->status == 1)
-                                            <span class="badge bg-success-subtle rounded-3 py-2 text-success fw-semibold fs-2 d-inline-flex align-items-center gap-1">
-                                                <iconify-icon icon="fluent-mdl2:check-mark"></iconify-icon>
-                                                Successful
-                                            </span>
-                                            @else
-                                            @endif
-
-                                        </td>
-
-
-                                        <td>{{$data->created_at}}</td>
+                                        @elseif($data->transaction_type == 'EP TRANSFER')
+                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
+                                            EP TRANSFER
+                                        </span>
+                                        @endif
 
 
 
+                                    </td>
+
+                                    <td>₦{{number_format($data->e_charges ,2)}}</td>
+
+                                    <td>
+                                        @if($data->status == 1)
+                                        <span class="badge bg-success-subtle rounded-3 py-2 text-success fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="fluent-mdl2:check-mark"></iconify-icon>
+                                            Successful
+                                        </span>
+                                        @else
+                                        @endif
+
+                                    </td>
+
+
+                                    <td>{{$data->created_at}}</td>
 
 
 
 
 
-                                    </tr>
 
-                                    @empty
 
-                                    <tr>
-                                        No record found
-                                    </tr>
 
-                                    @endforelse
+                                </tr>
 
-                                </tbody>
+                                @empty
+
+                                <tr>
+                                    No record found
+                                </tr>
+
+                                @endforelse
+
+                            </tbody>
+
 
                                 {{ $transactions->links() }}
                             </table>

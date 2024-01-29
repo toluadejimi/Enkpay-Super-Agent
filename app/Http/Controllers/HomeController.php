@@ -1100,7 +1100,6 @@ class HomeController extends Controller
                 'transaction_type' => 'purchase',
                 'status' => '1'
 
-
             ]
         )->count();
 
