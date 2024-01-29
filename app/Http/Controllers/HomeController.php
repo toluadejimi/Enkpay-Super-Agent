@@ -1105,7 +1105,7 @@ class HomeController extends Controller
         )->count();
 
 
-        $data['transactions'] =  Transaction::where('user_id', $request->id)->where('status', 1)->take('50')->get();
+        $data['transactions'] =  Transaction::latest()->where('user_id', $request->id)->where('status', 1)->take('50')->get();
 
 
         return view('view-user', $data);
