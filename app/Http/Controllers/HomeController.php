@@ -38,24 +38,24 @@ class HomeController extends Controller
         $data['transactions'] = Transaction::latest()->where('user_id', Auth::id())->where('super_agent_id', $super_agent_id)->paginate('50');
         $data['total_in_transaction'] = Transaction::where('user_id', Auth::id())
             ->where([
-                'super_agent_id' => $super_agent_id,
+                'register_under_id' => $under_code,
                 'status' => 1,
             ])->sum('credit');
 
 
         $data['total_in_month_transaction'] = Transaction::where('user_id', Auth::id())
             ->where([
-                'super_agent_id' => $super_agent_id,
+                'register_under_id' => $under_code,
                 'created_at' => $today,
                 'status' => 1,
 
-            ])->sum('credit');
+        ])->sum('credit');
 
 
 
         $data['total_out_month_transaction'] = Transaction::where('user_id', Auth::id())
             ->where([
-                'super_agent_id' => $super_agent_id,
+                'register_under_id' => $under_code,
                 'created_at' => $today,
                 'status' => 1,
 
@@ -64,14 +64,9 @@ class HomeController extends Controller
 
         $data['total_out_transaction'] = Transaction::where('user_id', Auth::id())
             ->where([
-                'super_agent_id' => $super_agent_id,
+                'register_under_id' => $under_code,
                 'status' => 1,
             ])->sum('debit');
-
-
-
-
-
 
 
 
@@ -1171,8 +1166,6 @@ class HomeController extends Controller
         $data['pos_charge'] = Charge::where('user_id', Auth::id())->where('title', 'pos_charge')->first()->amount;
         $data['transfer_charge'] = Charge::where('user_id', Auth::id())->where('title', 'transfer_charge')->first()->amount;
         $data['bills_charge'] = Charge::where('user_id', Auth::id())->where('title', 'bills_charge')->first()->amount;
-
-
 
 
         return view('company', $data);

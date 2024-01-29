@@ -186,7 +186,12 @@
                                     <td>₦{{number_format($data->credit ,2)}}</td>
                                     <td>₦{{number_format($data->balance ,2)}}</td>
                                     <td>
-                                        @if($data->transaction_type == 'Purchase')
+                                        @if($data->transaction_type == 'PURCHASE')
+                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
+                                            PURCHASE
+                                        </span>
+                                         @elseif($data->transaction_type == 'Purchase')
                                         <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
                                             <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
                                             PURCHASE
