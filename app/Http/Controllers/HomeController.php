@@ -37,7 +37,7 @@ class HomeController extends Controller
 
 
         $data['customers'] = User::where('register_under_id', $under_code)->count();
-        $data['transactions'] = Transaction::latest()->where('user_id', Auth::id())->where('super_agent_id', $super_agent_id)->paginate('50');
+        $data['transactions'] = Transaction::latest()->where('register_under_id', $under_code)->paginate('50');
         $data['total_in_transaction'] = Transaction::where([
                 'register_under_id' => $under_code,
                 'status' => 1,
