@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TidConfig;
+use App\Models\VirtualAccount;
 use DateTime;
 use Carbon\Carbon;
 use App\Models\Item;
@@ -21,6 +23,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
+
 
 class HomeController extends Controller
 {
@@ -145,8 +149,6 @@ class HomeController extends Controller
 
     public function index(request $request)
     {
-
-
         return view('welcome');
     }
 
@@ -258,186 +260,6 @@ class HomeController extends Controller
 
 
 
-    public function step_2(Request $request)
-    {
-
-
-        return view('step2');
-    }
-    public function step_3(Request $request)
-    {
-
-
-        return view('step3');
-    }
-
-
-    public function step_4(Request $request)
-    {
-
-        $data['devices'] = Device::where('user_id', Auth::id())->get();
-
-        return view('step4', $data);
-    }
-
-
-
-    public function set_device(Request $request)
-    {
-
-        $dev = new  Device();
-        $dev->device = $request->device;
-        $dev->user_id = Auth::id();
-        $dev->watt = $request->watt;
-        $dev->save();
-
-
-        $data['devices'] =  Device::where('user_id', Auth::id())->get();
-
-
-        return back()->with('message', 'Device Added Successfully');
-    }
-
-    public function device(Request $request)
-    {
-
-        $data['device'] = Device::where('id', $request->device_id)->first();
-        $device = Device::where('id', $request->device_id)->first();
-        $data['activity'] = Instance::latest()->where('device_id', $request->device_id)->where('user_id', Auth::id())->take('5')->get();
-
-        $time = Instance::where('device_id', $request->device_id)->whereDate('created_at', Carbon::today())->first() ?? null;
-
-
-        $dateTime = Carbon::parse($time->created_at ?? null);
-        $data['hour'] = $dateTime->hour ?? null;
-
-        $getsec = Instance::where('device_id', $request->device_id)->sum('oh_hour') ?? null;
-        $data['totalActive'] = $getsec / 3660;
-
-        $ctime = Instance::where('device_id', $request->device_id)->whereDate('created_at', Carbon::today())->sum('oh_hour') ?? null;
-        $aatime = $ctime / 3660 ?? null;
-
-
-
-
-        $data['dailyConsumption'] = $device->watt / 1000 * ($aatime) ?? null;
-
-
-
-        return view('device', $data);
-    }
-
-
-
-    public function device_delete(Request $request)
-    {
-
-        Device::where('id', $request->id)->delete();
-
-
-        return redirect('step4')->with('error', 'Device Deleted Successfully');
-    }
-
-
-
-    public function update_on(request $request)
-    {
-
-        Device::where('id', $request->id)->update(['status' => 1]);
-
-        $in = new Instance();
-        $in->user_id = Auth::id();
-        $in->device_id = $request->id;
-        $in->status = 1;
-        $in->save();
-
-
-        return back()->with('message', 'Device on successfully');
-    }
-
-
-
-    public function update_off(request $request)
-    {
-
-        Device::where('id', $request->id)->update(['status' => 0]);
-
-        $get_last_on = Instance::latest()->where('device_id', $request->id)->where('status', 1)->first()->created_at ?? null;
-        $now = Carbon::now();
-        $startDate = Carbon::parse($get_last_on);
-        $endDate = Carbon::parse($now);
-        $hour1 = $startDate->hour;
-        $hour2 = $endDate->hour;
-
-        $secondsDifference = $startDate->diffInSeconds($endDate);
-
-
-
-        $in = new Instance();
-        $in->user_id = Auth::id();
-        $in->device_id = $request->id;
-        $in->status = 0;
-        $in->oh_hour = $secondsDifference;
-        $in->save();
-
-        return back()->with('error', 'Device off successfully');
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function verify_email_otp(Request $request)
-    {
-
-        try {
-
-            $user_id = Auth::id() ?? null;
-
-
-
-            return response()->json([
-                'status' => $this->failed,
-                'message' => 'Invalid code, try again',
-            ], 500);
-
-            if ($code == $get_auth_code && $user_id == Auth::id()) {
-
-                $update = User::where('id', $user_id)
-                    ->update([
-
-                        'is_email_verified' => 1,
-                        'status' => 1,
-
-                    ]);
-
-                return response()->json([
-                    'status' => $this->success,
-                    'message' => 'OTP Code verified successfully',
-                ], 200);
-            }
-
-            return response()->json([
-                'status' => $this->failed,
-                'message' => 'Invalid code, try again',
-            ], 500);
-        } catch (\Exception $th) {
-            return $th->getMessage();
-        }
-    }
-
 
     public function welcome_index(request $request)
     {
@@ -498,260 +320,6 @@ class HomeController extends Controller
 
         return view('welcome', $data);
     }
-
-
-
-    public function fund_wallet(Request $request)
-    {
-        $user = Auth::id() ?? null;
-        $transaction = Transaction::latest()->where('user_id', Auth::id())->paginate(10);
-
-
-        return view('fund-wallet', compact('user', 'transaction'));
-    }
-
-
-
-
-
-    public function fund_manual_now(Request $request)
-    {
-
-
-
-        if ($request->receipt == null) {
-            return back()->with('error', "Payment receipt is required");
-        }
-
-
-        $file = $request->file('receipt');
-        $receipt_fileName = date("ymis") . $file->getClientOriginalName();
-        $destinationPath = public_path() . 'upload/receipt';
-        $request->receipt->move(public_path('upload/receipt'), $receipt_fileName);
-
-
-        $pay = new ManualPayment();
-        $pay->receipt = $receipt_fileName;
-        $pay->user_id = Auth::id();
-        $pay->amount = $request->amount;
-        $pay->save();
-
-
-        $message = Auth::user()->email . "| submitted payment receipt |  NGN " . number_format($request->amount) . " | on LOG MARKETPLACE";
-        send_notification2($message);
-
-
-        return view('confirm-pay');
-    }
-
-
-    public function confirm_pay(Request $request)
-    {
-
-        return view('confirm-pay');
-    }
-
-
-
-
-
-    public function fund_now(Request $request)
-    {
-
-        $request->validate([
-            'amount'      => 'required|numeric|gt:0',
-        ]);
-
-
-
-
-
-        Transaction::where('user_id', Auth::id())->where('status', 1)->delete() ?? null;
-
-
-
-        if ($request->type == 1) {
-
-            if ($request->amount < 100) {
-                return back()->with('error', 'You can not fund less than NGN 100');
-            }
-
-
-            if ($request->amount > 100000) {
-                return back()->with('error', 'You can not fund more than NGN 100,000');
-            }
-
-
-
-
-            $key = env('WEBKEY');
-            $ref = "LOG-" . random_int(000, 999) . date('ymdhis');
-            $email = Auth::user()->email;
-
-            $url = "https://web.enkpay.com/pay?amount=$request->amount&key=$key&ref=$ref&email=$email";
-
-
-            $data                  = new Transaction();
-            $data->user_id         = Auth::id();
-            $data->amount          = $request->amount;
-            $data->ref_id          = $ref;
-            $data->type            = 2;
-            $data->status          = 1; //initiate
-            $data->save();
-
-
-            $message = Auth::user()->email . "| wants to fund |  NGN " . number_format($request->amount) . " | with ref | $ref |  on LOG MARKETPLACE";
-            send_notification2($message);
-
-            return Redirect::to($url);
-        }
-
-
-
-        if ($request->type == 2) {
-
-            if ($request->amount < 100) {
-                return back()->with('error', 'You can not fund less than NGN 100');
-            }
-
-
-            if ($request->amount > 100000) {
-                return back()->with('error', 'You can not fund more than NGN 100,000');
-            }
-
-
-
-
-            $ref = "LOG-" . random_int(000, 999) . date('ymdhis');
-            $email = Auth::user()->email;
-
-
-            $data                  = new Transaction();
-            $data->user_id         = Auth::id();
-            $data->amount          = $request->amount;
-            $data->ref_id          = $ref;
-            $data->type            = 6; //manual funding
-            $data->status          = 1; //initiate
-            $data->save();
-
-
-            $message = Auth::user()->email . "| wants to fund Manually |  NGN " . number_format($request->amount) . " | with ref | $ref |  on LOG MARKETPLACE";
-            send_notification2($message);
-
-            $data['account_details'] = AccountDetail::where('id', 1)->first();
-            $data['amount'] = $request->amount;
-
-            return view('manual-fund', $data);
-        }
-    }
-
-
-    public function verify_payment(request $request)
-    {
-
-        $trx_id = $request->trans_id;
-        $ip = $request->ip();
-        $status = $request->status;
-
-
-        if ($status == 'failed') {
-
-
-            $message = Auth::user()->email . "| Cancled |  NGN " . number_format($request->amount) . " | with ref | $trx_id |  on LOG MARKETPLACE";
-            send_notification2($message);
-
-            Transaction::where('ref_id', $trx_id)->where('status', 1)->update(['status' => 3]);
-            return redirect('fund-wallet')->with('error', 'Transaction Declined');
-        }
-
-
-
-
-        $trxstatus = Transaction::where('ref_id', $trx_id)->first()->status ?? null;
-
-        if ($trxstatus == 2) {
-
-            $message =  Auth::user()->email . "| is trying to fund  with | " . number_format($request->amount, 2) . "\n\n IP ====> " . $request->ip();
-            send_notification($message);
-
-            $message =  Auth::user()->email . "| on LOG MarketPlace | is trying to fund  with | " . number_format($request->amount, 2) . "\n\n IP ====> " . $request->ip();
-            send_notification2($message);
-
-
-
-            return redirect('fund-wallet')->with('error', 'Transaction already confirmed or not found');
-        }
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://web.enkpay.com/api/verify',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array('trans_id' => "$trx_id"),
-        ));
-
-        $var = curl_exec($curl);
-        curl_close($curl);
-        $var = json_decode($var);
-
-        $status1 = $var->detail ?? null;
-        $amount = $var->price ?? null;
-
-
-
-
-        if ($status1 == 'success') {
-
-            $chk_trx = Transaction::where('ref_id', $trx_id)->first() ?? null;
-            if ($chk_trx == null) {
-                return back()->with('error', 'Transaction not processed, Contact Admin');
-            }
-
-            Transaction::where('ref_id', $trx_id)->update(['status' => 2]);
-            User::where('id', Auth::id())->increment('wallet', $amount);
-
-            $message =  Auth::user()->email . "| just funded NGN" . number_format($request->amount, 2) . " on Log market";
-            send_notification($message);
-
-
-
-            $order_id = $trx_id;
-            $databody = array('order_id' => "$order_id");
-
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://web.enkpay.com/api/resolve-complete',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => $databody,
-            ));
-
-            $var = curl_exec($curl);
-            curl_close($curl);
-            $var = json_decode($var);
-
-
-            $message = Auth::user()->email . "| Just funded |  NGN " . number_format($request->amount) . " | with ref | $order_id |  on LOG MARKETPLACE";
-            send_notification2($message);
-
-
-            return redirect('fund-wallet')->with('message', "Wallet has been funded with $amount");
-        }
-
-        return redirect('fund-wallet')->with('error', 'Transaction already confirmed or not found');
-    }
-
-
 
 
 
@@ -912,132 +480,6 @@ class HomeController extends Controller
 
 
 
-    public function change_password(request $request)
-    {
-
-        $user = Auth::id();
-
-
-        return view('change-password', compact('user'));
-    }
-
-
-
-    public function faq(request $request)
-    {
-        $user = Auth::id();
-        return view('faq', compact('user'));
-    }
-
-    public function terms(request $request)
-    {
-        $user = Auth::id();
-        return view('terms', compact('user'));
-    }
-
-    public function rules(request $request)
-    {
-        $user = Auth::id();
-        return view('rules', compact('user'));
-    }
-
-    public function policy(request $request)
-    {
-        $user = Auth::id();
-        return view('policy', compact('user'));
-    }
-
-
-
-
-    public function update_password_now(request $request)
-    {
-        // Validate the user input
-        $validatedData = $request->validate([
-            'password' => 'required|string|min:4|confirmed',
-        ]);
-
-        User::where('id', Auth::id())->update([
-            'password' => Hash::make($validatedData['password']),
-        ]);
-
-        // Redirect the user to a protected route or dashboard
-        return back()->with('message', 'Password Changed Successfully');
-    }
-
-
-
-
-
-
-    public function forget_password(request $request)
-    {
-
-        $user = Auth::id() ?? null;
-
-        return view('forget-password', compact('user'));
-    }
-
-    public function reset_password(request $request)
-    {
-
-        $email = $request->email;
-        $expiryTimestamp = time() + 24 * 60 * 60; // 24 hours in seconds
-        $url = url('') . "/verify-password?code=$expiryTimestamp&email=$request->email";
-
-        $ck = User::where('email', $request->email)->first()->email ?? null;
-
-        if ($ck == $request->email) {
-
-            User::where('email', $email)->update([
-                'code' => $expiryTimestamp
-            ]);
-
-            $data = array(
-                'fromsender' => 'noreply@logmarketplace.com', 'LOG MARKETPLACE',
-                'subject' => "Reset Password",
-                'toreceiver' => $email,
-                'url' => $url,
-            );
-
-
-            Mail::send('reset-password-mail', ["data1" => $data], function ($message) use ($data) {
-                $message->from($data['fromsender']);
-                $message->to($data['toreceiver']);
-                $message->subject($data['subject']);
-            });
-
-
-
-            return redirect('/forgot-password')->with('message', "A reset password mail has been sent to $request->email, if not inside inbox check your spam folder");
-        } else {
-            return back()->with('error', 'Email can not be found on our system');
-        }
-    }
-
-
-    public function verify_password(request $request)
-    {
-
-        $code = User::where('email', $request->email)->first()->code;
-
-
-        $storedExpiryTimestamp = $request->code;;
-
-        if (time() >= $storedExpiryTimestamp) {
-
-            $user = Auth::id() ?? null;
-            $email = $request->email;
-            return view('expired', compact('user', 'email'));
-        } else {
-
-            $user = Auth::id() ?? null;
-            $email = $request->email;
-
-            return view('verify-password', compact('user', 'email'));
-        }
-    }
-
 
     public function view_terminal(request $request)
     {
@@ -1050,6 +492,9 @@ class HomeController extends Controller
 
         $data['terminal']  = Terminal::where('register_under_id', $under_code)->get();
 
+        $user_id = $request->user_id;
+        $data['user'] =  User::where('id', $user_id)->first() ?? null;
+        $data['terminalNO'] = Terminal::latest('created_at')->first()->terminalNo;
 
         return view('add-terminal', $data);
     }
@@ -1060,29 +505,41 @@ class HomeController extends Controller
 
 
         $under_code = SuperAgent::where('user_id', Auth::id())->first()->register_under_id;
-        $super_agent_id = SuperAgent::where('user_id', Auth::id())->first()->id;
-
+        $agent = SuperAgent::where('user_id', Auth::id())->first();
         $ck_serial_no = Terminal::where('serial_no', $request->deviceSN)->first()->serial_no ?? null;
+        $usr = User::where('id', $request->user_id)->first();
+
+        $v_account_no = VirtualAccount::where('user_id', $request->user_id)->first() ?? null;
+
+        if($v_account_no == null){
+            return back()->with('error', 'Generate an account number for customer');
+        }
 
 
-
-        
-        if($ck_serial_no == $request->deviceSN){
-
-        return back()->with('error', 'Terminal has already been assigned');
-
+        if($ck_serial_no == $request->serial_no){
+            return back()->with('error', 'Terminal has already been assigned to a customer');
         }
 
         $ter = new Terminal();
         $ter->user_id = $request->user_id;
-        $ter->serial_no = $request->deviceSN;
+        $ter->serial_no = $request->serial_no;
         $ter->register_under_id = $under_code;
-        $ter->description = $request->description;
+        $ter->description = $usr->first_name. " ".$usr->last_name;
         $ter->merchantNo = $request->merchantNo;
         $ter->terminalNo = $request->terminalNo;
-        $ter->merchantName = $request->merchantName;
-        $ter->deviceSN = $request->deviceSN;
+        $ter->merchantName = "ENKWAVE-".($usr->first_name. " ".$usr->last_name);
+        $ter->deviceSN = $request->serial_no;
+        $ter->business_id = $agent->business_id;
+        $ter->v_account_no = $v_account_no;
+
+
         $ter->save();
+
+
+        $tid = new TidConfig();
+        $tid->user_id = $request->user_id;
+        $tid->logoUrl = $agent->logo_url;
+        $tid->save();
 
 
         return back()->with('message', 'Terminal assigned successfully');
@@ -1105,6 +562,10 @@ class HomeController extends Controller
 
 
         $data['transactions'] =  Transaction::latest()->where('user_id', $request->id)->where('status', 1)->take('50')->get();
+
+        $data['terminal'] =  Terminal::latest()->where('user_id', $request->id)->get();
+
+        $data['user_id'] =  $request->id;
 
 
         return view('view-user', $data);
@@ -1210,4 +671,111 @@ class HomeController extends Controller
 
         return redirect('/');
     }
+
+
+    public function verify_email(request $request)
+    {
+        $user =  User::where('id', $request->id)->first() ?? null;
+
+        if($user == null){
+            return back()->with('error', 'User not found');
+        }
+
+        if($user->email != null ){
+            User::where('id', $request->id)->update(['is_email_verified' => 1]);
+            return back()->with('message', 'Phone has been successfully verified');
+        }
+
+        return back()->with('error', 'somrthing went wrong');
+
+    }
+
+    public function verify_phone(request $request)
+    {
+        $user =  User::where('id', $request->id)->first() ?? null;
+
+        if($user == null){
+            return back()->with('error', 'User not found');
+        }
+
+        if($user->phone != null ){
+            User::where('id', $request->id)->update(['is_phone_verified' => 1]);
+            return back()->with('message', 'Phone has been successfully verified');
+        }
+
+        return back()->with('error', 'somrthing went wrong');
+
+
+
+    }
+
+    public function verify_nin(request $request)
+    {
+        $user =  User::where('id', $request->id)->first() ?? null;
+
+        if($user == null){
+            return back()->with('error', 'User not found');
+        }
+
+        if($user->identification_number != null && $user->utility_bill != null ){
+            User::where('id', $request->id)->update(['is_phone_verified' => 1]);
+            return back()->with('message', 'Phone has been successfully verified');
+        }
+
+        return back()->with('error', 'somrthing went wrong');
+
+
+
+    }
+
+
+    public function verify_bvn(request $request)
+    {
+        $user =  User::where('id', $request->id)->first() ?? null;
+
+        if($user == null){
+            return back()->with('error', 'User not found');
+        }
+
+        if($user->identification_image != null && $user->bvn != null ){
+            User::where('id', $request->id)->update(['is_bvn_verified' => 1]);
+            return back()->with('message', 'Phone has been successfully verified');
+         }
+
+        return back()->with('error', 'BVN Data not found');
+
+
+
+    }
+
+
+    public function verify_now(request $request)
+    {
+        $user =  User::where('id', $request->id)->first() ?? null;
+
+        if($user == null){
+            return back()->with('error', 'User not found');
+        }
+
+        if($user->phone != null ){
+            User::where('id', $request->id)->update(['is_phone_verified' => 1]);
+            return back()->with('message', 'Phone has been successfully verified');
+        }
+
+        return back()->with('error', 'somrthing went wrong');
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

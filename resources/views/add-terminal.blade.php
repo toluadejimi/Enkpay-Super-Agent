@@ -63,74 +63,55 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-3">
+                                @if($user == null)
+
+                                    <div class="form-floating mb-3">
+                                        <select type="text" name="user_id" class="form-control" required>
+                                            <option value="">Select an optiopn</option>
+                                            @foreach($customers as $data)
+                                                <option value="{{$data->id}}">{{$data->first_name}} {{$data->last_name}}</option>
+                                            @endforeach
+                                        </select>
+                                        <label for="tb-fname">Select Customer</label>
+                                    </div>
+
+                                @else
+
                                 <div class="form-floating mb-3">
-                                    <select type="text" name="user_id" class="form-control" required>
-                                        <option value="">Select an optiopn</option>
-                                        @foreach($customers as $data)
-                                        <option value="{{$data->id}}">{{$data->first_name}} {{$data->last_name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" value="{{$user->first_name}} {{$user->last_name}}" disabled  name="name" class="form-control">
+                                    <input type="text" value="{{$user->id}}" hidden  name="user_id" class="form-control" required>
+
                                     <label for="tb-fname">Select Customer</label>
                                 </div>
+
+
+                                    <div class="form-floating mb-3">
+                                        <input type="text" value="{{$terminalNO}}" disabled  name="name" class="form-control">
+                                        <input type="text" value="{{$user->id}}" hidden  name="user_id" class="form-control" required>
+
+                                        <label for="tb-fname">Last Terminal No</label>
+                                    </div>
+                                @endif
                             </div>
+
+
 
 
                             <div class="col-md-3">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" required name="merchantNo" placeholder="" />
-                                    <label for="tb-email">Merchnat No</label>
+                                    <input type="text" class="form-control" name="serial_no" placeholder="name@example.com" />
+                                    <label for="tb-email">Terminal Serial Number</label>
                                 </div>
                             </div>
+
+
 
                             <div class="col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" required name="terminalNo" placeholder="" />
-                                    <label for="tb-email">Terminal No (TID)</label>
+                                    <label for="tb-email">Terminal No</label>
                                 </div>
                             </div>
-
-                            <div class="col-md-3">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" required name="deviceSN" placeholder="" />
-                                    <label for="tb-email">Device Serial No</label>
-                                </div>
-                            </div>
-
-
-
-                            <hr>
-
-
-
-
-                            <div class="col-md-3">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" name="v_account_no" placeholder="name@example.com" />
-                                    <label for="tb-email">V Account No</label>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-3">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" name="description" placeholder="name@example.com" />
-                                    <label for="tb-email">V Account Name</label>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-3">
-                                <div class="form-floating mb-3">
-                                    <select type="text" name="v_bank_name" class="form-control">
-                                        <option value="">Select an optiopn</option>
-                                        <option value="PROVIDUS BANK">Providus Bank </option>
-                                        <option value="WEMA BANK">Wema Bank</option>
-                                    </select>
-                                    <label for="tb-pwd">BANK</label>
-                                </div>
-                            </div>
-
-
 
 
 
@@ -139,9 +120,6 @@
 
 
                         <hr>
-
-
-
 
 
 
@@ -206,7 +184,7 @@
 
                                     <tr>
 
-                                        <td>{{$data->user->first_name}} {{$data->user->last_name}}</td>
+                                        <td>{{$data->user->first_name ?? "name"}} {{$data->user->last_name ?? "name"}}</td>
                                         <td>{{($data->serial_no)}}</td>
                                         <td>{{($data->terminalNo)}}</td>
                                         <td>

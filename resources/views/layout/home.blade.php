@@ -7,9 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-
-
-    <!-- Favicon icon-->
+<!-- Favicon icon-->
     <link rel="shortcut icon" type="image/png" href="{{url('')}}/public/assets2/images/logos/favicon.png" />
 
     <!-- Core Css -->
@@ -189,8 +187,8 @@
                                     <i class="ti ti-align-justified fs-7"></i>
                                 </a>
                                 <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-center">
-                                   
-                                   
+
+
                                     <!-- ------------------------------- -->
                                     <!-- start profile Dropdown -->
                                     <!-- ------------------------------- -->
@@ -227,7 +225,7 @@
                                                             <span class="fs-2 d-block text-body-secondary">Account Settings</span>
                                                         </div>
                                                     </a>
-                                                   
+
                                                 </div>
                                                 <div class="d-grid py-4 px-7 pt-8">
                                                     <div class="upgrade-plan bg-primary-subtle position-relative overflow-hidden rounded-4 p-4 mb-9">
@@ -264,10 +262,10 @@
                     <!-- apps Dropdown in Small screen -->
                     <!-- ------------------------------- -->
                     <!--  Mobilenavbar -->
-                   
+
 
                 </div>
-              
+
             </header>
             <!--  Header End -->
 

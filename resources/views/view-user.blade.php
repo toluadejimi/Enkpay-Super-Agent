@@ -116,6 +116,13 @@
                             <span class="d-none d-md-block">KYC</span>
                         </button>
                     </li>
+
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-6" id="pills-terminal-tab" data-bs-toggle="pill" data-bs-target="#pills-terminal" type="button" role="tab" aria-controls="pills-terminal" aria-selected="false">
+                            <i class="ti ti-terminal-2 me-2 fs-6"></i>
+                            <span class="d-none d-md-block">Terminal</span>
+                        </button>
+                    </li>
                     {{-- <li class="nav-item" role="presentation">
                         <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-6" id="pills-friends-tab" data-bs-toggle="pill" data-bs-target="#pills-friends" type="button" role="tab" aria-controls="pills-friends" aria-selected="false">
                             <i class="ti ti-user-circle me-2 fs-6"></i>
@@ -139,44 +146,44 @@
                     <div class="table-responsive mb-4">
                         <table id="file_export" class="table border table-striped table-bordered display text-nowrap">
                             <thead class="text-dark fs-4">
-                                <tr>
-                                    <th>
-                                        <h6 class="fs-4 fw-semibold mb-0">Refrence Number</h6>
-                                    </th>
-                                    <th>
-                                        <h6 class="fs-4 fw-semibold mb-0">Customer Name</h6>
-                                    </th>
-                                    <th>
-                                        <h6 class="fs-4 fw-semibold mb-0">Debit</h6>
-                                    </th>
-                                    <th>
-                                        <h6 class="fs-4 fw-semibold mb-0">Credit</h6>
-                                    </th>
+                            <tr>
+                                <th>
+                                    <h6 class="fs-4 fw-semibold mb-0">Refrence Number</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fs-4 fw-semibold mb-0">Customer Name</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fs-4 fw-semibold mb-0">Debit</h6>
+                                </th>
+                                <th>
+                                    <h6 class="fs-4 fw-semibold mb-0">Credit</h6>
+                                </th>
 
-                                    <th>
-                                        <h6 class="fs-4 fw-semibold mb-0">Balance</h6>
-                                    </th>
+                                <th>
+                                    <h6 class="fs-4 fw-semibold mb-0">Balance</h6>
+                                </th>
 
-                                    <th>
-                                        <h6 class="fs-4 fw-semibold mb-0">Type</h6>
-                                    </th>
+                                <th>
+                                    <h6 class="fs-4 fw-semibold mb-0">Type</h6>
+                                </th>
 
-                                    <th>
-                                        <h6 class="fs-4 fw-semibold mb-0">Agent Fee</h6>
-                                    </th>
+                                <th>
+                                    <h6 class="fs-4 fw-semibold mb-0">Agent Fee</h6>
+                                </th>
 
-                                    <th>
-                                        <h6 class="fs-4 fw-semibold mb-0">Status</h6>
-                                    </th>
+                                <th>
+                                    <h6 class="fs-4 fw-semibold mb-0">Status</h6>
+                                </th>
 
-                                    <th>
-                                        <h6 class="fs-4 fw-semibold mb-0">Date / Time</h6>
-                                    </th>
-                                </tr>
+                                <th>
+                                    <h6 class="fs-4 fw-semibold mb-0">Date / Time</h6>
+                                </th>
+                            </tr>
                             </thead>
                             <tbody>
 
-                                @forelse($transactions as $data)
+                            @forelse($transactions as $data)
 
                                 <tr>
 
@@ -187,33 +194,33 @@
                                     <td>₦{{number_format($data->balance ,2)}}</td>
                                     <td>
                                         @if($data->transaction_type == 'PURCHASE')
-                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
                                             <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
                                             PURCHASE
                                         </span>
-                                         @elseif($data->transaction_type == 'Purchase')
-                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                        @elseif($data->transaction_type == 'Purchase')
+                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
                                             <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
                                             PURCHASE
                                         </span>
                                         @elseif($data->transaction_type == 'VirtualFundWallet')
-                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
                                             <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
                                             WALLET FUNDING
                                         </span>
                                         @elseif($data->transaction_type == 'BankTransfer')
-                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
                                             <iconify-icon icon="mdi:arrow-up-thin"></iconify-icon>
                                             BANK TRANSFER
                                         </span>
                                         @elseif($data->transaction_type == 'CashOut')
-                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
                                             <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
                                             CASH OUT
                                         </span>
 
                                         @elseif($data->transaction_type == 'EP TRANSFER')
-                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
                                             <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
                                             EP TRANSFER
                                         </span>
@@ -227,7 +234,7 @@
 
                                     <td>
                                         @if($data->status == 1)
-                                        <span class="badge bg-success-subtle rounded-3 py-2 text-success fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <span class="badge bg-success-subtle rounded-3 py-2 text-success fw-semibold fs-2 d-inline-flex align-items-center gap-1">
                                             <iconify-icon icon="fluent-mdl2:check-mark"></iconify-icon>
                                             Successful
                                         </span>
@@ -248,13 +255,13 @@
 
                                 </tr>
 
-                                @empty
+                            @empty
 
                                 <tr>
                                     No record found
                                 </tr>
 
-                                @endforelse
+                            @endforelse
 
                             </tbody>
 
@@ -265,10 +272,14 @@
 
                 </div>
             </div>
+
+
             <div class="tab-pane fade" id="pills-followers" role="tabpanel" aria-labelledby="pills-followers-tab" tabindex="0">
+
+
                 <div class="d-sm-flex align-items-center justify-content-between mt-3 mb-4">
                     <h3 class="mb-3 mb-sm-0 fw-semibold d-flex align-items-center">KYC Verifications</h3>
-                    
+
                 </div>
                 <div class="row">
                     <div class=" col-md-6 col-xl-4">
@@ -279,7 +290,7 @@
                                     <span class="fs-2 d-flex align-items-center"></i>{{ $usr->email }}</span>
                                 </div>
                                 @if($usr->is_email_verified == 0)
-                                <button class="btn btn-warning py-1 px-2 ms-auto">Verify Email</button>
+                                <a href="verify-email?id={{$usr->id}}" class="btn btn-warning py-1 px-2 ms-auto">Verify Email</a>
                                 @else
                                 <button class="btn btn-outline-success py-1 px-2 ms-auto" disabled>Verified</button>
                                 @endif
@@ -295,7 +306,7 @@
                                     <span class="fs-2 d-flex align-items-center"></i>{{ $usr->phone }}</span>
                                 </div>
                                 @if($usr->is_phone_verified == 0)
-                                <button class="btn btn-warning py-1 px-2 ms-auto">Verify Phone</button>
+                                <a href="verify-phone?id={{$usr->id}}" class="btn btn-warning py-1 px-2 ms-auto">Verify Phone</a>
                                 @else
                                 <button class="btn btn-outline-success py-1 px-2 ms-auto" disabled>Verified</button>
                                 @endif
@@ -311,7 +322,7 @@
                                     <span class="fs-2 d-flex align-items-center"></i>{{ Str::mask($usr->bvn, '*', -15, 6) }}</span>
                                 </div>
                                 @if($usr->is_bvn_verified == 0)
-                                <button class="btn btn-warning py-1 px-2 ms-auto">Verify BVN</button>
+                                <a href="verify-bvn?id={{$usr->id}}" class="btn btn-warning py-1 px-2 ms-auto">Verify BVN</a>
                                 @else
                                 <button class="btn btn-outline-success py-1 px-2 ms-auto" disabled>Verified</button>
                                 @endif
@@ -326,7 +337,7 @@
                                     <h5 class="fw-semibold mb-0">NIN Verification</h5>
                                 </div>
                                 @if($usr->is_bvn_verified == 0)
-                                <button class="btn btn-warning py-1 px-2 ms-auto">Verify NIN</button>
+                                <button href="verify-nin?id={{$usr->id}}" class="btn btn-warning py-1 px-2 ms-auto">Verify NIN</button>
                                 @else
                                 <button class="btn btn-outline-success py-1 px-2 ms-auto" disabled>Verified</button>
                                 @endif
@@ -338,6 +349,87 @@
 
                 </div>
             </div>
+
+
+            <div class="tab-pane fade" id="pills-terminal" role="tabpanel" aria-labelledby="pills-terminal-tab" tabindex="0">
+
+                <div class="table-responsive mb-4">
+                    <table id="file_export" class="table border table-striped table-bordered display text-nowrap">
+                        <thead class="text-dark fs-4">
+                        <tr>
+                            <th>
+                                <h6 class="fs-4 fw-semibold mb-0">Serial Number</h6>
+                            </th>
+                            <th>
+                                <h6 class="fs-4 fw-semibold mb-0">Status</h6>
+                            </th>
+                            <th>
+                                <h6 class="fs-4 fw-semibold mb-0">Action</h6>
+                            </th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @forelse($terminal as $data)
+
+                            <tr>
+
+                                <td>{{$data->serial_no}}</td>
+
+                                <td>
+                                    @if($data->status == 0)
+                                        <span class="badge bg-danger-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
+                                            INACTIVE
+                                        </span>
+                                    @else
+                                        <span class="badge bg-primary-subtle rounded-3 py-2 text-primary fw-semibold fs-2 d-inline-flex align-items-center gap-1">
+                                            <iconify-icon icon="mdi:arrow-down-thin"></iconify-icon>
+                                            ACTIVE
+                                        </span>
+                                    @endif
+                                </td>
+
+                                <td>
+                                    <a href="#" class="btn btn-danger btn-sm">Delete Terminal</a>
+
+                                </td>
+
+
+                            </tr>
+
+                        @empty
+
+                            <div class="col-12 my-5 d-flex justify-content-center" >
+
+                                <a href="terminal?user_id={{$user_id}}" class="btn btn-primary btn-sm">Add New Terminal</a>
+
+
+
+                            </div>
+
+                        @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
             {{-- <div class="tab-pane fade" id="pills-friends" role="tabpanel" aria-labelledby="pills-friends-tab" tabindex="0">
                 <div class="d-sm-flex align-items-center justify-content-between mt-3 mb-4">
                     <h3 class="mb-3 mb-sm-0 fw-semibold d-flex align-items-center">Friends <span class="badge text-bg-secondary fs-2 rounded-4 py-1 px-2 ms-2">20</span></h3>
