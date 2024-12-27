@@ -137,8 +137,8 @@ class ZoneController extends Controller
 
         $geofenceCoordinates = [
             [
-                'lat' => $data['zone']->lat_1 ?? 6.5244,
-                'lng' => $data['zone']->lng_1 ?? 3.3792,
+                'lat' => $data['zone']->lat_1 ?? 0,
+                'lng' => $data['zone']->lng_1 ?? 0,
             ],
             [
                 'lat' => $data['zone']->lat_2 ?? 0,
