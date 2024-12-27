@@ -181,12 +181,16 @@
                     <div class="card-body">
                         <h5 class="mb-3">Test Geofencing</h5>
 
+
+                        <button onclick="getLocation()">Get Current Location</button>
+
+
                         <form action="test-geofence" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-floating mb-3">
-                                        <input id="lat" class="form-control" required name="lat" readonly>
+                                        <input id="lat" class="form-control" required name="lat">
                                         <label for="tb-email">Latitude</label>
 
                                     </div>
@@ -195,7 +199,7 @@
 
                                 <div class="col-md-4">
                                     <div class="form-floating mb-3">
-                                        <input id="lng" class="form-control" required name="lng" readonly>
+                                        <input id="lng" class="form-control" required name="lng">
                                         <label for="tb-email">Longitude</label>
 
                                     </div>
@@ -255,6 +259,30 @@
                         </script>
 
 
+
+                        <script>
+                            function getLocation() {
+                                if (navigator.geolocation) {
+                                    console.log("Geolocation API is available.");
+                                    navigator.geolocation.getCurrentPosition(function(position) {
+                                        var lat = position.coords.latitude;
+                                        var lng = position.coords.longitude;
+
+                                        console.log("Latitude: " + lat);
+                                        console.log("Longitude: " + lng);
+
+                                        // Update the HTML with the retrieved coordinates
+                                        document.getElementById("lat").value = lat;
+                                        document.getElementById("lng").value = lng;
+                                    }, function(error) {
+                                        console.error("Error occurred: " + error.message);
+                                        alert("Error occurred: " + error.message);
+                                    });
+                                } else {
+                                    alert("Geolocation is not supported by this browser.");
+                                }
+                            }
+                        </script>
 
                     </div>
 
