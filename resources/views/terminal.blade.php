@@ -224,70 +224,37 @@
 
 
 
-
-
-
-{{--                        <script>--}}
-{{--                            function getDeviceLocation() {--}}
-{{--                                if (navigator.geolocation) {--}}
-{{--                                    navigator.geolocation.getCurrentPosition(function(position) {--}}
-{{--                                        const lat = position.coords.latitude;--}}
-{{--                                        const lng = position.coords.longitude;--}}
-
-{{--                                        // Log values to the console for debugging--}}
-{{--                                        console.log('Latitude: ' + lat);--}}
-{{--                                        console.log('Longitude: ' + lng);--}}
-
-{{--                                        // Set the retrieved latitude and longitude into the form fields--}}
-{{--                                        document.getElementById("lat").value = lat;--}}
-{{--                                        document.getElementById("lng").value = lng;--}}
-{{--                                    }, function(error) {--}}
-{{--                                        // Log error message and show alert--}}
-{{--                                        console.error('Error getting location: ', error);--}}
-{{--                                        alert("Error getting location: " + error.message);--}}
-{{--                                    });--}}
-{{--                                } else {--}}
-{{--                                    alert("Geolocation is not supported by this browser.");--}}
-{{--                                }--}}
-{{--                            }--}}
-
-{{--                            window.onload = function() {--}}
-{{--                                // Call the geolocation function on page load--}}
-{{--                                getDeviceLocation();--}}
-{{--                            };--}}
-{{--                        </script>--}}
-
-
-                        <h2>Geolocation Test</h2>
-
-                        <button onclick="getLocation()">Get Current Location</button>
-
-                        <p>Latitude: <span id="latitude">Not Available</span></p>
-                        <p>Longitude: <span id="longitude">Not Available</span></p>
-
                         <script>
-                            function getLocation() {
+                            function getDeviceLocation() {
                                 if (navigator.geolocation) {
-                                    console.log("Geolocation API is available.");
                                     navigator.geolocation.getCurrentPosition(function(position) {
-                                        var lat = position.coords.latitude;
-                                        var lng = position.coords.longitude;
+                                        const lat = position.coords.latitude;
+                                        const lng = position.coords.longitude;
 
-                                        console.log("Latitude: " + lat);
-                                        console.log("Longitude: " + lng);
+                                        // Log values to the console for debugging
+                                        console.log('Latitude: ' + lat);
+                                        console.log('Longitude: ' + lng);
 
-                                        // Update the HTML with the retrieved coordinates
-                                        document.getElementById("latitude").textContent = lat;
-                                        document.getElementById("longitude").textContent = lng;
+                                        // Set the retrieved latitude and longitude into the form fields
+                                        document.getElementById("lat").value = lat;
+                                        document.getElementById("lng").value = lng;
                                     }, function(error) {
-                                        console.error("Error occurred: " + error.message);
-                                        alert("Error occurred: " + error.message);
+                                        // Log error message and show alert
+                                        console.error('Error getting location: ', error);
+                                        alert("Error getting location: " + error.message);
                                     });
                                 } else {
                                     alert("Geolocation is not supported by this browser.");
                                 }
                             }
+
+                            window.onload = function() {
+                                // Call the geolocation function on page load
+                                getDeviceLocation();
+                            };
                         </script>
+
+
 
                     </div>
 
