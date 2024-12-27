@@ -21,7 +21,7 @@ class ZoneController extends Controller
     public function view_zone(request $request)
     {
 
-        $data['zone'] = Zone::where('id',$request->id)->first();
+        $data['zone'] = Zone::where('id', $request->id)->first();
         $data['coordinates'] = [
             [
                 'lat' => $data['zone']->lat_1,
@@ -72,7 +72,6 @@ class ZoneController extends Controller
     }
 
 
-
     public function update(Request $request)
     {
         $data = $request->all();
@@ -102,7 +101,7 @@ class ZoneController extends Controller
     public function add_new_zone(Request $request)
     {
 
-        $data['zone'] = Zone::where('id',$request->id)->first();
+        $data['zone'] = Zone::where('id', $request->id)->first();
         $data['coordinates'] = [
             [
                 'lat' => $data['zone']->lat_1 ?? 6.5244,
@@ -126,20 +125,37 @@ class ZoneController extends Controller
     }
 
 
-
-
     public function test_geofence(Request $request)
     {
 
         $deviceLat = $request->lat;
         $deviceLng = $request->lng;
 
+
+        $zone_id = Terminal::where('serial_no', $request->serial_no)->first()->geo_fence_id;
+        $data['zone'] = Zone::where('id', $zone_id)->first();
+
         $geofenceCoordinates = [
-            ['lat' => 6.5707873443594, 'lng' => 3.3105354492187],
-            ['lat' => 6.5806782048762, 'lng' => 3.4615974609375],
-            ['lat' => 6.4855131800713, 'lng' => 3.4870033447266],
-            ['lat' => 6.459928108439, 'lng' => 3.302295703125],
+            [
+                'lat' => $data['zone']->lat_1 ?? 6.5244,
+                'lng' => $data['zone']->lng_1 ?? 3.3792,
+            ],
+            [
+                'lat' => $data['zone']->lat_2 ?? 0,
+                'lng' => $data['zone']->lng_2 ?? 0,
+            ],
+            [
+                'lat' => $data['zone']->lat_3 ?? 0,
+                'lng' => $data['zone']->lng_3 ?? 0,
+            ],
+            [
+                'lat' => $data['zone']->lat_4 ?? 0,
+                'lng' => $data['zone']->lng_4 ?? 0,
+            ]
         ];
+
+
+
 
         $isInside = $this->isLocationInsideGeofence($deviceLat, $deviceLng, $geofenceCoordinates);
 
@@ -155,7 +171,6 @@ class ZoneController extends Controller
         }
         return $this->pointInPolygon($lat, $lng, $polygon);
     }
-
 
 
     private function pointInPolygon($lat, $lng, $polygon)
@@ -186,10 +201,6 @@ class ZoneController extends Controller
         }
         return $inside;
     }
-
-
-
-
 
 
 }

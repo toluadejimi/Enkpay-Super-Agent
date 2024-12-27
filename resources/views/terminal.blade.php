@@ -88,6 +88,10 @@
                                 </div>
 
 
+
+
+
+
                                 @if($ter->geo_fence_id == null)
 
                                     <div class="col-md-4">
@@ -201,6 +205,7 @@
                                     <div class="form-floating mb-3">
                                         <input id="lng" class="form-control" required name="lng">
                                         <label for="tb-email">Longitude</label>
+                                        <input type="text" hidden value="{{$ter->serial_no}}" name="serial_no">
 
                                     </div>
                                 </div>
