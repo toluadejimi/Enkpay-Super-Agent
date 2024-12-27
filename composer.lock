@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "88e27052ce33cdf6e43fbff85943ba47",
+    "content-hash": "f124485ae57e9ec28a916fb780586e11",
     "packages": [
         {
             "name": "brick/math",
@@ -210,6 +210,58 @@
                 }
             ],
             "time": "2023-08-31T09:50:34+00:00"
+        },
+        {
+            "name": "davidvandertuijn/laravel-google-maps",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/davidvandertuijn/laravel-google-maps.git",
+                "reference": "d4dca3be559982b2f32ead3c9b22d80f47f3e627"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/davidvandertuijn/laravel-google-maps/zipball/d4dca3be559982b2f32ead3c9b22d80f47f3e627",
+                "reference": "d4dca3be559982b2f32ead3c9b22d80f47f3e627",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Mapper": "Davidvandertuijn\\LaravelGoogleMaps\\Facades\\MapperFacade"
+                    },
+                    "providers": [
+                        "Davidvandertuijn\\LaravelGoogleMaps\\MapperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Davidvandertuijn\\LaravelGoogleMaps\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David van der Tuijn",
+                    "email": "davidvandertuijn@mac.com"
+                }
+            ],
+            "description": "Laravel Google Maps",
+            "homepage": "https://github.com/davidvandertuijn/laravel-google-maps",
+            "support": {
+                "issues": "https://github.com/davidvandertuijn/laravel-google-maps/issues",
+                "source": "https://github.com/davidvandertuijn/laravel-google-maps"
+            },
+            "time": "2024-04-05T13:50:35+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -8812,6 +8864,6 @@
     "platform": {
         "php": "^8.1"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

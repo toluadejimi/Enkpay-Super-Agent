@@ -17,6 +17,9 @@
 
 
     <title>AGENT DASHBOARD</title>
+
+
+
 </head>
 
 <body>
@@ -96,6 +99,8 @@
                             </a>
                         </li>
 
+
+
                         <!-- ---------------------------------- -->
                         <!-- UI -->
                         <!-- ---------------------------------- -->
@@ -118,6 +123,13 @@
                         </li>
 
 
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="zone" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-location"></i>
+                                </span>
+                                <span class="hide-menu">Geo Fencing</span>
+                            </a>
                         </li>
 
 

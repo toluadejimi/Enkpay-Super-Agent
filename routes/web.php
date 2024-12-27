@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TerminalController;
+use App\Http\Controllers\ZoneController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 
@@ -49,6 +51,24 @@ Route::any('terminal',  [HomeController::class,'view_terminal']);
 Route::any('add-terminal',  [HomeController::class,'add_terminal']);
 Route::any('company',  [HomeController::class,'company']);
 Route::any('edit-company',  [HomeController::class,'update_company']);
+Route::any('view-terminal',  [TerminalController::class,'view_terminal']);
+Route::post('', [TerminalController::class, 'store']);
+Route::any('set-geofence', [TerminalController::class, 'set_geofence']);
+Route::any('test-geofence', [ZoneController::class, 'test_geofence']);
+
+
+
+
+
+Route::any('/zone', [ZoneController::class, 'index']);
+Route::any('view-zone', [ZoneController::class, 'view_zone']);
+Route::any('update-geofence', [ZoneController::class, 'update']);
+Route::any('store-geofence', [ZoneController::class, 'store']);
+Route::any('add-new-zone', [ZoneController::class, 'add_new_zone']);
+
+
+
+
 
 
 

@@ -175,6 +175,11 @@
                                         <th>
                                             <h6 class="fs-4 fw-semibold mb-0">Date / Time</h6>
                                         </th>
+
+                                        <th>
+                                            <h6 class="fs-4 fw-semibold mb-0">Action</h6>
+                                        </th>
+
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -185,7 +190,7 @@
                                     <tr>
 
                                         <td>{{$data->user->first_name ?? "name"}} {{$data->user->last_name ?? "name"}}</td>
-                                        <td>{{($data->serial_no)}}</td>
+                                        <td><a href="/view-terminal?t_id={{($data->id)}}">{{($data->serial_no)}}</a> </td>
                                         <td>{{($data->terminalNo)}}</td>
                                         <td>
                                             @if($data->status == 1)
@@ -195,11 +200,23 @@
                                             </span>
                                             @else
                                             @endif
-
                                         </td>
 
 
                                         <td>{{$data->created_at}}</td>
+
+
+                                        <td>
+                                            @if($data->status == 1)
+                                              <a href="deactivate-terminal" class="btn btn-danger">De-Activate Terminal</a>
+                                            @else
+                                            @endif
+                                        </td>
+
+
+
+
+
 
 
 

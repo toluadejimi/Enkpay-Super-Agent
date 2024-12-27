@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'db8a09e310390f4dfbfd85ebf0fb5c49ce04103c',
+        'reference' => 'e2cc124310224a3855372320dca1982195004070',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -48,6 +48,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'davidvandertuijn/laravel-google-maps' => array(
+            'pretty_version' => 'v1.0',
+            'version' => '1.0.0.0',
+            'reference' => 'd4dca3be559982b2f32ead3c9b22d80f47f3e627',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../davidvandertuijn/laravel-google-maps',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'dflydev/dot-access-data' => array(
             'pretty_version' => 'v3.0.2',
@@ -409,7 +418,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'db8a09e310390f4dfbfd85ebf0fb5c49ce04103c',
+            'reference' => 'e2cc124310224a3855372320dca1982195004070',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -838,8 +847,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '3.0.0',
+                0 => '3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache' => array(

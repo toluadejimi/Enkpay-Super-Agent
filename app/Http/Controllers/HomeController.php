@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TidConfig;
 use App\Models\VirtualAccount;
+use App\Models\Zone;
 use DateTime;
 use Carbon\Carbon;
 use App\Models\Item;
@@ -509,7 +510,7 @@ class HomeController extends Controller
         $ck_serial_no = Terminal::where('serial_no', $request->deviceSN)->first()->serial_no ?? null;
         $usr = User::where('id', $request->user_id)->first();
 
-        $v_account_no = VirtualAccount::where('user_id', $request->user_id)->first() ?? null;
+        $v_account_no = VirtualAccount::where('user_id', $request->user_id)->first()->v_acccount_no ?? null;
 
         if($v_account_no == null){
             return back()->with('error', 'Generate an account number for customer');
@@ -531,8 +532,6 @@ class HomeController extends Controller
         $ter->deviceSN = $request->serial_no;
         $ter->business_id = $agent->business_id;
         $ter->v_account_no = $v_account_no;
-
-
         $ter->save();
 
 
@@ -542,9 +541,17 @@ class HomeController extends Controller
         $tid->save();
 
 
+
+
         return back()->with('message', 'Terminal assigned successfully');
 
     }
+
+
+
+
+
+
 
     public function view_customer(request $request)
     {
@@ -623,6 +630,7 @@ class HomeController extends Controller
         $data['pos_charge'] = Charge::where('user_id', Auth::id())->where('title', 'pos_charge')->first()->amount;
         $data['transfer_charge'] = Charge::where('user_id', Auth::id())->where('title', 'transfer_charge')->first()->amount;
         $data['bills_charge'] = Charge::where('user_id', Auth::id())->where('title', 'bills_charge')->first()->amount;
+        $data['zone'] = Zone::where('user_id', Auth::id())->get();
 
 
         return view('company', $data);
@@ -632,9 +640,6 @@ class HomeController extends Controller
 
     public function  update_company(request $request)
     {
-
-
-
         SuperAgent::where('user_id', Auth::id())->update([
 
             'pos_charge' => $request->pos_charge,

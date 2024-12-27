@@ -71,7 +71,7 @@ return [
     */
 
     'timezone' => 'Europe/Paris',
-    
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -168,6 +168,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Davidvandertuijn\LaravelGoogleMaps\MapperServiceProvider::class,
+
+
     ])->toArray(),
 
     /*
@@ -183,6 +186,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Mapper' => Davidvandertuijn\LaravelGoogleMaps\Facades\MapperFacade::class,
     ])->toArray(),
 
 ];
