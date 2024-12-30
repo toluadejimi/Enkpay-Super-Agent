@@ -14,10 +14,7 @@ class TerminalController extends Controller
 
         $data['ter'] = Terminal::where('id', $request->t_id)->first();
         $data['zones'] = Zone::where('user_id', Auth::id())->get();
-
         return view('terminal', $data);
-
-
     }
 
     public function set_geofence(Request $request)
